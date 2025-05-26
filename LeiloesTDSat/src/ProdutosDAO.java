@@ -62,5 +62,65 @@ public class ProdutosDAO {
         }
         return listagem;
     }
+    public void venderProduto(int id)
+    {
+        
+            conn = new conectaDAO().connectDB();   
+            ArrayList<ProdutosDTO> listagem = new ArrayList<>();
+            
+            try
+            { 
+                   String sql = "update produtos set status = 'Vendido' where id = ?";
+                  
+                   prep = conn.prepareStatement(sql);
+                   prep.setInt(1, id);
+                   prep.executeUpdate();
+                   
+                   while(resultset.next())
+                   {
+                            ProdutosDTO produto = new ProdutosDTO();
+                            produto.setStatus(resultset.getString("status"));
+                            
+                            listagem.add(produto);
+                   }
+                   
+            }
+            catch(Exception e)
+            {
+                        JOptionPane.showMessageDialog(null, "Erro ao vender o produto: "+ e.getMessage());
+            }
+    }
+    public ArrayList<ProdutosDTO> listarProdutosVendidos()
+    {
+            conn = new conectaDAO().connectDB();   
+            ArrayList<ProdutosDTO> lista= new ArrayList<>();
+            
+            try
+            {
+                    String sql = "select * from produtos where status = 'Vendido'";
+                    
+                    prep = conn.prepareStatement(sql);
+                    resultset = prep.executeQuery();
+                    
+                    while(resultset.next())
+                    {
+                            ProdutosDTO produto = new ProdutosDTO();
+                            produto.setId(resultset.getInt("id"));
+                            produto.setNome(resultset.getString("nome"));
+                            produto.setValor(resultset.getInt("valor"));
+                            produto.setStatus(resultset.getString("status"));
+                            
+                            lista.add(produto);
+                    }
+                    
+            }
+            catch(Exception e)
+            {
+                    JOptionPane.showMessageDialog(null, "Erro ao listar produtos vendidos: " + e.getMessage());
+            }      
+            return lista;
     }
 
+    }
+
+    
