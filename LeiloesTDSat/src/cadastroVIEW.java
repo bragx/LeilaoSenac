@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 public class cadastroVIEW extends javax.swing.JFrame {
 
     public cadastroVIEW() {
@@ -123,16 +126,34 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
+        try {
+        ProdutosDAO produtosDao = new ProdutosDAO();
+        ProdutosDTO produtos = new ProdutosDTO();
+
         String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        int valor = Integer.parseInt(cadastroValor.getText());
+
+            produtos.setNome(nome);
+            produtos.setValor(valor);
+
+        int resposta = produtosDao.cadastrarProduto(produtos);
+
+        if (resposta == 1) {
+            JOptionPane.showMessageDialog(null, "Produto salvo com sucesso!");
+
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar o produto.");
+        }
+
+    } catch (NumberFormatException nfe) {
+        JOptionPane.showMessageDialog(null, "Erro: formato numérico inválido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro inesperado: " + e.getMessage());
+    }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
