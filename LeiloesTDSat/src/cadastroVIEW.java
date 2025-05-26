@@ -139,7 +139,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         int resposta = produtosDao.cadastrarProduto(produtos);
 
         if (resposta == 1) {
-            JOptionPane.showMessageDialog(null, "Produto salvo com sucesso!");
+            JOptionPane.showMessageDialog(null, "Produto salvo com sucesso.");
 
             cadastroNome.setText("");
             cadastroValor.setText("");
